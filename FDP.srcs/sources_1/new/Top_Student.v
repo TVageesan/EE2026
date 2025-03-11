@@ -15,28 +15,15 @@ module Top_Student (input basys_clock, input btnC, output [7:0] JB);
 
  wire CLOCK_6p25; 
  wire fb, sending_p, sampleP;
- wire [12:0] pixel_index;
- wire [15:0] pixel_data_output;
+ wire [15:0] oled_c;
+ wire [6:0] x;
+ wire [5:0] y;
 
  Clock clk (basys_clock, 7, CLOCK_6p25);
  
- Task_C taskC (basys_clock, btnC, pixel_index, pixel_data_output);
+ Task_C taskC (basys_clock, btnC, x, y, oled_c);
   
- Oled_Display Oled_A ( 
- .clk(CLOCK_6p25), 
- .reset(0),
- .frame_begin(fb), 
- .sending_pixels(sending_p),
-.sample_pixel(sampleP), 
-.pixel_index(pixel_index), 
-.pixel_data(pixel_data_output), 
-.cs(JB[0]), 
-.sdin(JB[1]), 
-.sclk(JB[3]), 
-.d_cn(JB[4]), 
-.resn(JB[5]), 
-.vccen(JB[6]),
-.pmoden(JB[7]));
+ Display display (basys_clock, oled_c , x, y, JB);
             
 
 
